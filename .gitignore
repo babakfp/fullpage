@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.ignore
+.vscode
+node_modules
+*-lock.*
+*.log
+refs
