@@ -14,6 +14,25 @@ class FPS
 		this.throw_error_if_slider_arg_was_not_valid()
 		this.slider = document.querySelector(`fp-slider#${this.slider}`)
 		this.throw_error_if_slider_el_did_not_exist()
+		
+		// TODO: Validate
+		this.all_slides = this.slider.querySelectorAll('fp-slide')
+		this.throw_error_if_el_could_not_be_found(this.all_slides, 'fp-slide')
+
+		this.slide_len = this.all_slides.length
+		this.active_slide_index = 0
+		this.prev_wheel_deltaY = Math.floor(window.scrollY)
+
+		// 
+
+		window.addEventListener('wheel', e => {
+			if (e.deltaY > 0) {
+				this.scroll_to_next_slide()
+			} else {
+				this.scroll_to_prev_slide()
+			}
+			this.slider.style.transform = `translateY(-${this.all_slides[this.active_slide_index].offsetTop}px)`
+		})
   }
 
 	throw_error_if_slider_arg_was_not_valid() {
@@ -35,6 +54,34 @@ class FPS
 				Error('The referenced fp-slider element could not be found.')
 			)
 		}
+	}
+
+	/**
+	 * @parem el {Node|NodeList} QuerySelector
+	 * @parem el_name {String}
+	 */
+	throw_error_if_el_could_not_be_found(el, el_name) {
+		if ( el === null || el.length <= 0 ) {
+			throw(
+				Error(`The referenced ${el_name} element could not be found.`)
+			)
+		}
+	}
+
+	// 
+
+	scroll_to_next_slide() {
+		if (this.active_slide_index < this.slide_len - 1) {
+			this.active_slide_index += 1
+		}
+		console.log(this.active_slide_index);
+	}
+
+	scroll_to_prev_slide() {
+		if (this.active_slide_index > 0) {
+			this.active_slide_index -= 1
+		}
+		console.log(this.active_slide_index);
 	}
 
 }

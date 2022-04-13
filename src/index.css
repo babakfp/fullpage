@@ -1,14 +1,54 @@
+html,
 body {
-	background: #181818;
-	color: #ffffffba;
-}
-
-fp-slider,
-fp-slide,
-fp-subslide {
-	position: relative;
-	display: block;
-	width: 100%;
 	height: 100%;
 }
 
+body {
+	margin: 0;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+fp-slider {
+	transition: all 1000ms ease 0s;
+}
+
+fp-slider,
+fp-slide {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+fp-slide {
+	height: 100vh;
+}
+
+/* Test */
+
+body {
+	background: #383838;
+	color: #F2F2F2;
+}
+
+fp-slider {
+	background: #066163;
+}
+
+fp-slide {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+fp-slide:nth-child(1) {
+	background: #E78EA9;
+}
+
+fp-slide:nth-child(2) {
+	background: #B9F8D3;
+}
+
+fp-slide:nth-child(3) {
+	background: #40DFEF;
+}
