@@ -3,7 +3,7 @@
  * @param _slider {String} ID of fp-slider
  * @param _options {Object}
  */
-class FPS
+class Full_Page
 {
 	constructor(_slider='', _options={})
 	{
@@ -21,6 +21,7 @@ class FPS
 
 		this.slide_len = this.all_slides.length
 		this.active_slide_index = 0
+
 		this.prev_wheel_deltaY = Math.floor(window.scrollY)
 
 		// 
@@ -31,19 +32,31 @@ class FPS
 			} else {
 				this.scroll_to_prev_slide()
 			}
-			this.slider.style.transform = `translateY(-${this.all_slides[this.active_slide_index].offsetTop}px)`
+			this.set_slide_translateY()
 		})
   }
+
+	get_active_slide_el() {
+		return this.all_slides[this.active_slide_index]
+	}
+
+	set_slide_translateY() {
+		return document.documentElement.style.setProperty('--fp-translateY', `-${this.get_active_slide_el().offsetTop}px`)
+	}
+
+	/* Throw Error
+	-------------------------
+	*/
 
 	throw_error_if_slider_arg_was_not_valid() {
 		if ( this.slider === undefined || this.slider === null || this.slider === '' ) {
 			throw(
-				Error('The first argument(slider) of the FPS class is not valid.')
+				Error('The first argument(slider) of the Full_Page class is not valid.')
 			)
 		}
 		if ( typeof this.slider !== 'string' ) {
 			throw(
-				Error('The first argument(slider) of the FPS class needs to be a type of string.')
+				Error('The first argument(slider) of the Full_Page class needs to be a type of string.')
 			)
 		}
 	}
@@ -86,9 +99,8 @@ class FPS
 
 }
 
-const mySlider = new FPS(
-	'my-slider',
-	{
+window.addEventListener('load', _=> {
+	new Full_Page('my-slider', {
 		some_option: 'value'
-	}
-)
+	})
+})
