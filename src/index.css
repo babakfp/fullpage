@@ -1,5 +1,9 @@
 :root {
 	--fp-translateY: 0;
+	--fp-dot-size: 1rem;
+	--fp-dot-action-size: .25rem;
+	--fp-dot-action-hover-size: .5rem;
+	--fp-dot-action-active-size: .75rem;
 }
 
 html,
@@ -15,7 +19,7 @@ body {
 
 fp-slider {
 	transform: translateY(var(--fp-translateY));
-	transition: all 2000ms ease-in-out;
+	transition: 1000ms ease-in-out;
 }
 
 fp-slider,
@@ -24,6 +28,47 @@ fp-slide {
 	display: block;
 	width: 100%;
 	height: 100vh;
+}
+
+.fp-dots {
+	position: fixed;
+	right: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.fp-dots ul {
+	display: grid;
+	list-style: none;
+}
+
+.fp-dot-action {
+	all: unset;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--fp-dot-size);
+	height: var(--fp-dot-size);
+	cursor: pointer;
+}
+
+.fp-dot-action:hover::after {
+	width: var(--fp-dot-action-hover-size);
+	height: var(--fp-dot-action-hover-size);
+}
+
+.fp-dot-action::after {
+	content: "";
+	width: var(--fp-dot-action-size);
+	height: var(--fp-dot-action-size);
+	background: white;
+	border-radius: 99px;
+	transition: 200ms ease-in-out;
+}
+
+.fp-dot.active .fp-dot-action::after {
+	width: var(--fp-dot-action-active-size);
+	height: var(--fp-dot-action-active-size);
 }
 
 /* Test */
