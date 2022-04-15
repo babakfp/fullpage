@@ -19,42 +19,122 @@ class Full_Page
 		this.throw_error_if_slider_el_did_not_exist()
 		
 		// TODO: Validate
-		this.slide_all = this.slider.querySelectorAll('fp-slide')
-		this.throw_error_if_el_could_not_be_found(this.slide_all, 'fp-slide')
+		this.slide_nodes = this.slider.querySelectorAll('fp-slide')
+		this.throw_error_if_el_could_not_be_found(this.slide_nodes, 'fp-slide')
 
-		this.slide_len = this.slide_all.length
-		this.slide_active_index = 0
+		this.slide_len = this.slide_nodes.length
+		this.active_slide_index = 0
 
-		this.prev_wheel_deltaY = Math.floor(window.scrollY)
+		// this.prev_wheel_deltaY = Math.floor(window.scrollY)
 
-		// this.allow = true
+		this.allow_free_scroll = false
 
 		// -------------------------------------------
 		
 		this.dots
 		this.create_dots()
-		this.dot_all = this.slider.querySelectorAll('.fp-dot')
+		this.dot_nodes = this.slider.querySelectorAll('.fp-dot')
 		
-		this.dot_all.forEach((dot, i) => {
+		this.dot_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fp-dot-action').addEventListener('click', _=> {
-				this.dot_all.forEach(dot2 => dot2.classList.remove('active'))
+				this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
 
 				if ( ! dot.classList.contains('active') ) {
 					dot.classList.add('active')
-					this.slide_active_index = i
+					this.active_slide_index = i
 					this.set_slide_translateY()
 				}
 			})
 
 		})
-		
-		this.on_wheel()
+
+		this.allow_scroll = true
+
+		this.on_scroll()
+
   }
 
 	// -------------------------------------------
 	
+	on_scroll() {
+		this.slider.addEventListener('wheel', e => {
+
+			if (this.allow_free_scroll === true) {
+
+				this.do_scroll_stuff(e)
+			
+			} else if (this.allow_scroll) {
+
+				this.allow_scroll = false
+				this.do_scroll_stuff(e)
+	
+				setTimeout(_=> {
+					this.allow_scroll = true
+				}, this.get_scroll_speed_for_allow_scroll())
+
+			}
+
+		})
+	}
+
+	// 
+	/**
+	 * We don't want to user be able to do the next scroll after the exact amount of time of the transition duration because then user may try to scroll again, 1 second before the duration actualy ends. So we don't want that bad UX and brokenness.
+	 * 10%  | xx?
+	 * 100% | 1000ms
+	 */
+	get_scroll_speed_for_allow_scroll() {
+		const speedCssVar = this.get_css_var('--fp-scroll-speed')
+		const speed = speedCssVar.substring(0, speedCssVar.length - 2)
+		return speed * 75 / 100
+	}
+
+	do_scroll_stuff(e) {
+		if (e.deltaY > 0) {
+			this.scroll_to_next_slide()
+		} else {
+			this.scroll_to_prev_slide()
+		}
+		this.set_slide_translateY()
+	}
+
 	// -------------------------------------------
+
+	set_slide_translateY() {
+		return this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+	}
+
+	get_active_slide_el() {
+		return this.slide_nodes[this.active_slide_index]
+	}
+
+	// -------------------------------------------
+
+	update_dots_activeness() {
+		this.dot_nodes.forEach(dot => dot.classList.remove('active'))
+		this.dot_nodes[this.active_slide_index].classList.add('active')
+	}
+
+	scroll_to_next_slide() {
+		if (this.active_slide_index < this.slide_len - 1) {
+			this.active_slide_index += 1
+
+			this.update_dots_activeness()
+		}
+		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)
+	}
+
+	scroll_to_prev_slide() {
+		if (this.active_slide_index > 0) {
+			this.active_slide_index -= 1
+
+			this.update_dots_activeness()
+		}
+		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)
+	}
+
+	// --------------------------------------------
 
 	create_dots() {
 
@@ -91,68 +171,6 @@ class Full_Page
 		this.dots = nav
 		this.slider.appendChild(this.dots)
 
-	}
-
-	on_wheel() {
-		window.addEventListener('scroll', e => {
-			console.log('scrolling')
-		})
-
-		window.addEventListener('wheel', e => {
-			// console.log('wheel')
-
-			// setTimeout(_=> {
-			// 	if ( this.get_active_slide_el().offsetTop === this.get_el_translate_values(this.slider).y ) {
-			// 		this.allow = true
-			// 	}
-			// }, 2000)
-
-			// if ( this.allow ) {
-				if (e.deltaY > 0) {
-					this.scroll_to_next_slide()
-				} else {
-					this.scroll_to_prev_slide()
-				}
-				this.set_slide_translateY()
-			// }
-
-			// this.allow = false
-		})
-	}
-
-	// -------------------------------------------
-
-	set_slide_translateY() {
-		return this.set_css_var('--fp-translateY', `-${this.get_active_slide_el().offsetTop}px`)
-	}
-
-	get_active_slide_el() {
-		return this.slide_all[this.slide_active_index]
-	}
-
-	// -------------------------------------------
-
-	update_dots_activeness() {
-		this.dot_all.forEach(dot => dot.classList.remove('active'))
-		this.dot_all[this.slide_active_index].classList.add('active')
-	}
-
-	scroll_to_next_slide() {
-		if (this.slide_active_index < this.slide_len - 1) {
-			this.slide_active_index += 1
-
-			this.update_dots_activeness()
-		}
-		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
-	}
-
-	scroll_to_prev_slide() {
-		if (this.slide_active_index > 0) {
-			this.slide_active_index -= 1
-
-			this.update_dots_activeness()
-		}
-		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
 	}
 
 	/* CSS Variable Stuff

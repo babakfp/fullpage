@@ -1,5 +1,7 @@
 :root {
 	--fp-translateY: 0;
+	--fp-scroll-speed: 1000ms;
+
 	--fp-dot-size: 1rem;
 	--fp-dot-action-size: .25rem;
 	--fp-dot-action-hover-size: .5rem;
@@ -14,12 +16,17 @@ body {
 body {
 	margin: 0;
 	overflow: hidden;
+}
+
+fp-slider,
+fp-slider * {
+	padding: 0;
 	box-sizing: border-box;
 }
 
 fp-slider {
 	transform: translateY(var(--fp-translateY));
-	transition: 1000ms ease-in-out;
+	transition: var(--fp-scroll-speed) ease-in-out;
 }
 
 fp-slider,
@@ -63,7 +70,7 @@ fp-slide {
 	height: var(--fp-dot-action-size);
 	background: white;
 	border-radius: 99px;
-	transition: 200ms ease-in-out;
+	transition: 100ms ease-in-out;
 }
 
 .fp-dot.active .fp-dot-action::after {
