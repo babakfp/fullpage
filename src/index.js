@@ -94,12 +94,12 @@ class Full_Page
 	}
 
 	on_wheel() {
-		// window.addEventListener('scroll', e => {
-		// 	console.log('scrolling')
-		// })
+		window.addEventListener('scroll', e => {
+			console.log('scrolling')
+		})
 
 		window.addEventListener('wheel', e => {
-			console.log('wheel')
+			// console.log('wheel')
 
 			// setTimeout(_=> {
 			// 	if ( this.get_active_slide_el().offsetTop === this.get_el_translate_values(this.slider).y ) {
@@ -130,6 +130,31 @@ class Full_Page
 		return this.slide_all[this.slide_active_index]
 	}
 
+	// -------------------------------------------
+
+	update_dots_activeness() {
+		this.dot_all.forEach(dot => dot.classList.remove('active'))
+		this.dot_all[this.slide_active_index].classList.add('active')
+	}
+
+	scroll_to_next_slide() {
+		if (this.slide_active_index < this.slide_len - 1) {
+			this.slide_active_index += 1
+
+			this.update_dots_activeness()
+		}
+		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
+	}
+
+	scroll_to_prev_slide() {
+		if (this.slide_active_index > 0) {
+			this.slide_active_index -= 1
+
+			this.update_dots_activeness()
+		}
+		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
+	}
+
 	/* CSS Variable Stuff
 	-------------------------
 	*/
@@ -149,28 +174,6 @@ class Full_Page
 	 */
 	get_css_var(css_var_name) {
 		return getComputedStyle(document.documentElement).getPropertyValue(css_var_name)
-	}
-
-	// -------------------------------------------
-
-	scroll_to_next_slide() {
-		if (this.slide_active_index < this.slide_len - 1) {
-			this.slide_active_index += 1
-
-			this.dot_all.forEach(dot2 => dot2.classList.remove('active'))
-			this.dot_all[this.slide_active_index].classList.add('active')
-		}
-		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
-	}
-
-	scroll_to_prev_slide() {
-		if (this.slide_active_index > 0) {
-			this.slide_active_index -= 1
-
-			this.dot_all.forEach(dot2 => dot2.classList.remove('active'))
-			this.dot_all[this.slide_active_index].classList.add('active')
-		}
-		// console.log(`ACTIVE_SLIDE: ${this.slide_active_index}`)
 	}
 
 	/* Throw Error
