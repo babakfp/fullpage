@@ -1,13 +1,13 @@
 /**
  * Full Page Scroll
- * @param _slider {String} ID of fp-slider
+ * @param _slider {String} Unique id or class of .fp-slider element
  * @param _options {Object}
  */
 class Full_Page
 {
 	constructor(_slider='', _options={})
 	{
-    this.slider = _slider
+    this.slider_el = _slider
     this.options = _options
 
 		// Default Options Here:
@@ -15,14 +15,15 @@ class Full_Page
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
 
 		this.throw_error_if_slider_arg_was_not_valid()
-		this.slider = document.querySelector(`fp-slider#${this.slider}`)
+		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
 		this.throw_error_if_slider_el_did_not_exist()
+
+		this.slide_wrapper = this.slider_el.querySelector('.fp-slide-wrapper')
 		
 		// TODO: Validate
-		this.slide_nodes = this.slider.querySelectorAll('fp-slide')
-		this.throw_error_if_el_could_not_be_found(this.slide_nodes, 'fp-slide')
+		this.slide_nodes = this.slider_el.querySelectorAll('.fp-slide')
+		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fp-slide')
 
-		this.slide_len = this.slide_nodes.length
 		this.active_slide_index = 0
 
 		// this.prev_wheel_deltaY = Math.floor(window.scrollY)
@@ -31,10 +32,10 @@ class Full_Page
 
 		// -------------------------------------------
 		
-		this.dots
+		this.dots_el
 		this.create_dots()
-		this.dot_nodes = this.slider.querySelectorAll('.fp-dot')
-		
+		this.dot_nodes = this.slider_el.querySelectorAll('.fp-dot')
+
 		this.dot_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fp-dot-action').addEventListener('click', _=> {
@@ -58,7 +59,7 @@ class Full_Page
 	// -------------------------------------------
 	
 	on_scroll() {
-		this.slider.addEventListener('wheel', e => {
+		this.slide_wrapper.addEventListener('wheel', e => {
 
 			if (this.allow_free_scroll === true) {
 
@@ -78,7 +79,6 @@ class Full_Page
 		})
 	}
 
-	// 
 	/**
 	 * We don't want to user be able to do the next scroll after the exact amount of time of the transition duration because then user may try to scroll again, 1 second before the duration actualy ends. So we don't want that bad UX and brokenness.
 	 * 10%  | xx?
@@ -117,7 +117,7 @@ class Full_Page
 	}
 
 	scroll_to_next_slide() {
-		if (this.active_slide_index < this.slide_len - 1) {
+		if (this.active_slide_index < this.slide_nodes.length - 1) {
 			this.active_slide_index += 1
 
 			this.update_dots_activeness()
@@ -143,7 +143,7 @@ class Full_Page
 		
 		const ul = document.createElement('ul')
 
-		for (let i = 1; i <= this.slide_len; i++) {
+		for (let i = 1; i <= this.slide_nodes.length; i++) {
 
 			const li = document.createElement('li')
 			li.classList.add('fp-dot')
@@ -168,8 +168,8 @@ class Full_Page
 
 		nav.appendChild(ul)
 
-		this.dots = nav
-		this.slider.appendChild(this.dots)
+		this.dots_el = nav
+		this.slide_wrapper.appendChild(this.dots_el)
 
 	}
 
@@ -211,22 +211,27 @@ class Full_Page
 	}
 
 	throw_error_if_slider_el_did_not_exist() {
-		if ( this.slider === null ) {
+		if ( this.slider_el === null ) {
 			throw(
-				Error('The referenced fp-slider element could not be found.')
+				Error('The referenced .fp-slider element could not be found.')
 			)
 		}
 	}
 
 	throw_error_if_slider_arg_was_not_valid() {
-		if ( this.slider === undefined || this.slider === null || this.slider === '' ) {
+		if ( this.slider_el === undefined || this.slider_el === null || this.slider_el === '' ) {
 			throw(
 				Error('The first argument(slider) of the Full_Page class is not valid.')
 			)
 		}
-		if ( typeof this.slider !== 'string' ) {
+		if ( typeof this.slider_el !== 'string' ) {
 			throw(
 				Error('The first argument(slider) of the Full_Page class needs to be a type of string.')
+			)
+		}
+		if ( !this.slider_el.startsWith('#') && !this.slider_el.startsWith('.') ) {
+			throw(
+				Error('The first argument(slider) of the Full_Page class needs to start with `#` or `.`.')
 			)
 		}
 	}
@@ -280,7 +285,7 @@ class Full_Page
 }
 
 window.addEventListener('load', _=> {
-	new Full_Page('my-slider', {
+	new Full_Page('#my-slider', {
 		some_option: 'false',
 	})
 })

@@ -10,7 +10,7 @@
 
 html,
 body {
-	height: 100%;
+	min-height: 100%;
 }
 
 body {
@@ -18,19 +18,19 @@ body {
 	overflow: hidden;
 }
 
-fp-slider,
-fp-slider * {
+.fp-slider,
+.fp-slider * {
 	padding: 0;
 	box-sizing: border-box;
 }
 
-fp-slider {
+.fp-slider {
 	transform: translateY(var(--fp-translateY));
-	transition: var(--fp-scroll-speed) ease-in-out;
+	transition: transform var(--fp-scroll-speed) ease-in-out;
 }
 
-fp-slider,
-fp-slide {
+.fp-slider,
+.fp-slide {
 	position: relative;
 	display: block;
 	width: 100%;
@@ -80,29 +80,33 @@ fp-slide {
 
 /* Test */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 body {
-	background: #383838;
+	background: #827397;
 	color: #F2F2F2;
+	font-family: 'Poppins', sans-serif;
 }
 
-fp-slider {
-	background: #066163;
+.fp-slider {
+	background: #E9D5DA;
 }
 
-fp-slide {
+.fp-slide {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size: 64px;
 }
 
-fp-slide:nth-child(1) {
-	background: #E78EA9;
+.fp-slide:nth-child(1) {
+	background: #827397;
 }
 
-fp-slide:nth-child(2) {
-	background: #B9F8D3;
+.fp-slide:nth-child(2) {
+	background: #4D4C7D;
 }
 
-fp-slide:nth-child(3) {
-	background: #40DFEF;
+.fp-slide:nth-child(3) {
+	background: #363062;
 }
