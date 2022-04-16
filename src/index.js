@@ -169,7 +169,7 @@ class Full_Page
 		nav.appendChild(ul)
 
 		this.dots_el = nav
-		this.slide_wrapper.appendChild(this.dots_el)
+		this.slider_el.appendChild(this.dots_el)
 
 	}
 

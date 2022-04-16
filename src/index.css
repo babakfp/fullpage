@@ -24,7 +24,7 @@ body {
 	box-sizing: border-box;
 }
 
-.fp-slider {
+.fp-slide-wrapper {
 	transform: translateY(var(--fp-translateY));
 	transition: transform var(--fp-scroll-speed) ease-in-out;
 }
