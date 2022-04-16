@@ -59,7 +59,7 @@ class Full_Page
 	// -------------------------------------------
 	
 	on_scroll() {
-		this.slide_wrapper.addEventListener('wheel', e => {
+		this.slider_el.addEventListener('wheel', e => {
 
 			if (this.allow_free_scroll === true) {
 
