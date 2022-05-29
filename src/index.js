@@ -7,8 +7,8 @@ class Full_Page
 {
 	constructor(_slider='', _options={})
 	{
-    this.slider_el = _slider
-    this.options = _options
+		this.slider_el = _slider
+		this.options = _options
 
 		// Default Options Here:
 		this.options.some_option = this.options.some_option || 'default'
@@ -18,7 +18,7 @@ class Full_Page
 		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
 		this.throw_error_if_slider_el_did_not_exist()
 
-		this.slide_wrapper = this.slider_el.querySelector('.fp-slide-wrapper')
+		this.slide_wrapper_el = this.slider_el.querySelector('.fp-slide-wrapper')
 		
 		// TODO: Validate
 		this.slide_nodes = this.slider_el.querySelectorAll('.fp-slide')
@@ -52,9 +52,39 @@ class Full_Page
 
 		this.allow_scroll = true
 
+		// ------------------------------
+
+		if (this.get_current_active_slide_index_on_load() !== this.active_slide_index) {
+			this.active_slide_index = this.get_current_active_slide_index_on_load()
+			this.set_slide_translateY()
+			this.update_dots_activeness()
+		}
+
 		this.on_scroll()
 
   }
+
+	get_current_active_slide_index_on_load() {
+		let active_index
+		this.slide_nodes.forEach((slide, i) => {
+			if ( this.rect_values(slide).top === 0 ) {
+				active_index = i
+			}
+		})
+		return active_index
+	}
+
+	// Gets the values based on is the element in the viewport
+	rect_values (el) {
+    const rect = el.getBoundingClientRect()
+
+    return {
+			top: Math.floor(rect.top),
+			right: Math.floor(rect.right),
+			bottom: Math.floor(rect.bottom),
+			left: Math.floor(rect.left),
+    }
+	}
 
 	// -------------------------------------------
 	
