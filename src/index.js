@@ -117,7 +117,7 @@ class Full_Page
 	get_scroll_speed_for_allow_scroll() {
 		const speedCssVar = this.get_css_var('--fp-scroll-speed')
 		const speed = speedCssVar.substring(0, speedCssVar.length - 2)
-		return speed * 75 / 100
+    return speed * 90 / 100
 	}
 
 	do_scroll_stuff(e) {
