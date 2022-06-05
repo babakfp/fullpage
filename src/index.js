@@ -1,18 +1,19 @@
 /**
  * Full Page Scroll
- * @param _slider {String} Unique id or class of .fp-slider element
+ * @param _slider_el {String} Unique id or class of .fp-slider element
  * @param _options {Object}
  */
 class Full_Page
 {
-	constructor(_slider='', _options={})
+	constructor(_slider_el='', _options={})
 	{
-		this.slider_el = _slider
+		this.slider_el = _slider_el
 		this.options = _options
 
 		// Default Options Here:
 		this.options.some_option = this.options.some_option || 'default'
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
+		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
 		this.throw_error_if_slider_arg_was_not_valid()
 		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
@@ -25,10 +26,6 @@ class Full_Page
 		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fp-slide')
 
 		this.active_slide_index = 0
-
-		// this.prev_wheel_deltaY = Math.floor(window.scrollY)
-
-		this.allow_free_scroll = false
 
 		// -------------------------------------------
 		
@@ -54,25 +51,15 @@ class Full_Page
 
 		// ------------------------------
 
-		if (this.get_current_active_slide_index_on_load() !== this.active_slide_index) {
-			this.active_slide_index = this.get_current_active_slide_index_on_load()
-			this.set_slide_translateY()
-			this.update_dots_activeness()
-		}
-
 		this.on_scroll()
 
+    // Fix position when height resize
+    window.addEventListener('resize', _=> this.set_slide_translateY())
   }
 
-	get_current_active_slide_index_on_load() {
-		let active_index
-		this.slide_nodes.forEach((slide, i) => {
-			if ( this.rect_values(slide).top === 0 ) {
-				active_index = i
-			}
-		})
-		return active_index
-	}
+  fix_scroll_position_on_window_resize() {
+    
+  }
 
 	// Gets the values based on is the element in the viewport
 	rect_values (el) {
@@ -142,7 +129,7 @@ class Full_Page
 	// -------------------------------------------
 
 	update_dots_activeness() {
-		this.dot_nodes.forEach(dot => dot.classList.remove('active'))
+    this.dot_nodes.forEach(dot => dot.classList.remove('active'))
 		this.dot_nodes[this.active_slide_index].classList.add('active')
 	}
 
@@ -315,7 +302,7 @@ class Full_Page
 }
 
 window.addEventListener('load', _=> {
-	new Full_Page('#my-slider', {
+	const mySlider = new Full_Page('#my-slider', {
 		some_option: 'false',
 	})
 })
