@@ -53,25 +53,7 @@ class Full_Page
     window.addEventListener('resize', _=> this.set_slide_translateY())
   }
 
-  fix_scroll_position_on_window_resize() {
-    
-  }
-
-	// Gets the values based on is the element in the viewport
-	rect_values (el) {
-    const rect = el.getBoundingClientRect()
-
-    return {
-			top: Math.floor(rect.top),
-			right: Math.floor(rect.right),
-			bottom: Math.floor(rect.bottom),
-			left: Math.floor(rect.left),
-    }
-	}
-
-	// -------------------------------------------
-	
-	on_scroll() {
+  on_scroll() {
 		this.slider_node.addEventListener('wheel', e => {
 
 			if (this.allow_free_scroll === true) {
@@ -92,15 +74,16 @@ class Full_Page
 		})
 	}
 
-	/**
-	 * We don't want to user be able to do the next scroll after the exact amount of time of the transition duration because then user may try to scroll again, 1 second before the duration actualy ends. So we don't want that bad UX and brokenness.
-	 * 10%  | xx?
-	 * 100% | 1000ms
-	 */
-	get_scroll_speed_for_allow_scroll() {
-		const speedCssVar = this.get_css_var('--fp-scroll-speed')
-		const speed = speedCssVar.substring(0, speedCssVar.length - 2)
-    return speed * 90 / 100
+	// Gets the values based on is the element in the viewport
+	rect_values (el) {
+    const rect = el.getBoundingClientRect()
+
+    return {
+			top: Math.floor(rect.top),
+			right: Math.floor(rect.right),
+			bottom: Math.floor(rect.bottom),
+			left: Math.floor(rect.left),
+    }
 	}
 
 	do_scroll_stuff(e) {
@@ -112,8 +95,6 @@ class Full_Page
 		this.set_slide_translateY()
 	}
 
-	// -------------------------------------------
-
 	set_slide_translateY() {
 		return this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
 	}
@@ -122,7 +103,16 @@ class Full_Page
 		return this.slide_nodes[this.active_slide_index]
 	}
 
-	// -------------------------------------------
+	/**
+	 * We don't want to user be able to do the next scroll after the exact amount of time of the transition duration because then user may try to scroll again, 1 second before the duration actualy ends. So we don't want that bad UX and brokenness.
+	 * 10%  | xx?
+	 * 100% | 1000ms
+	 */
+	get_scroll_speed_for_allow_scroll() {
+		const speedCssVar = this.get_css_var('--fp-scroll-speed')
+		const speed = speedCssVar.substring(0, speedCssVar.length - 2)
+    return speed * 90 / 100
+	}
 
 	update_dots_activeness() {
     this.dot_nav_item_nodes.forEach(dot => dot.classList.remove('active'))
