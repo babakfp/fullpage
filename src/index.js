@@ -1,13 +1,13 @@
 /**
  * Full Page Scroll
- * @param _slider_el {String} Unique id or class of .fp-slider element
+ * @param _slider_node {HTMLElement} Main element
  * @param _options {Object}
  */
 class Full_Page
 {
-	constructor(_slider_el, _options={})
+	constructor(_slider_node, _options={})
 	{
-		this.slider_el = _slider_el
+		this.slider_node = _slider_node
 		this.options = _options
 
 		// Default Options Here:
@@ -15,10 +15,10 @@ class Full_Page
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
 		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
-		this.validate_slider_el_arg()
+		this.validate_slider_node_arg()
 		
 		// TODO: Validate
-		this.slide_nodes = this.slider_el.querySelectorAll('.fp-slide')
+		this.slide_nodes = this.slider_node.querySelectorAll('.fp-slide')
 		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fp-slide')
 
 		this.active_slide_index = 0
@@ -27,7 +27,7 @@ class Full_Page
 		
 		this.dots_el
 		this.create_dots()
-		this.dot_nodes = this.slider_el.querySelectorAll('.fp-dot')
+		this.dot_nodes = this.slider_node.querySelectorAll('.fp-dot')
 
 		this.dot_nodes.forEach((dot, i) => {
 
@@ -72,7 +72,7 @@ class Full_Page
 	// -------------------------------------------
 	
 	on_scroll() {
-		this.slider_el.addEventListener('wheel', e => {
+		this.slider_node.addEventListener('wheel', e => {
 
 			if (this.allow_free_scroll === true) {
 
@@ -182,7 +182,7 @@ class Full_Page
 		nav.appendChild(ul)
 
 		this.dots_el = nav
-		this.slider_el.appendChild(this.dots_el)
+		this.slider_node.appendChild(this.dots_el)
 
 	}
 
@@ -225,7 +225,7 @@ class Full_Page
 
 	/**
 	 * Gets computed translate values
-	 * @param {HTMLElement} element
+	 * @param element {HTMLElement}
 	 * @returns {Object}
 	 */
 	get_el_translate_values(element) {
@@ -283,17 +283,17 @@ class Full_Page
   }
 
   /** */
-	validate_slider_el_arg() {
+	validate_slider_node_arg() {
     
-    if ( typeof this.slider_el === 'undefined' ) {
+    if ( typeof this.slider_node === 'undefined' ) {
 			throw( Error(`The first argument ("slider") in the "Full_Page" class, is REQUIRED.`) )
     }
 
-    if ( !this.is_element(this.slider_el) ) {
+    if ( !this.is_element(this.slider_node) ) {
 			throw( Error(`The first argument ("slider") in the "Full_Page" class, is INVALID or is not a type of element, or it doesn't exist.`) )
     }
     
-    if ( !this.slider_el.classList.contains('fp-slider') ) {
+    if ( !this.slider_node.classList.contains('fp-slider') ) {
 			throw( Error(`The first argument ("slider") in the "Full_Page" class, must contain the "fp-slider" calss.`) )
     }
     
