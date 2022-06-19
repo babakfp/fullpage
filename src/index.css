@@ -25,6 +25,7 @@ body {
 }
 
 .fp-slide-wrapper {
+  display: grid;
 	transform: translateY(var(--fp-translateY));
 	transition: transform var(--fp-scroll-speed) ease-in-out;
 }

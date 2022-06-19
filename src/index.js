@@ -5,7 +5,7 @@
  */
 class Full_Page
 {
-	constructor(_slider_el='', _options={})
+	constructor(_slider_el, _options={})
 	{
 		this.slider_el = _slider_el
 		this.options = _options
@@ -19,7 +19,7 @@ class Full_Page
 		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
 		this.throw_error_if_slider_el_did_not_exist()
 
-		this.slide_wrapper_el = this.slider_el.querySelector('.fp-slide-wrapper')
+		// this.slide_wrapper_el = this.slider_el.querySelector('.fp-slide-wrapper')
 		
 		// TODO: Validate
 		this.slide_nodes = this.slider_el.querySelectorAll('.fp-slide')
@@ -190,6 +190,10 @@ class Full_Page
 
 	}
 
+  does_contain_whitespace(string) {
+    return /\s/.test(string)
+  }
+
 	/* CSS Variable Stuff
 	-------------------------
 	*/
@@ -236,24 +240,30 @@ class Full_Page
 	}
 
 	throw_error_if_slider_arg_was_not_valid() {
-		if ( this.slider_el === undefined || this.slider_el === null || this.slider_el === '' ) {
-			throw(
-				Error('The first argument(slider) of the Full_Page class is not valid.')
-			)
-		}
-		if ( typeof this.slider_el !== 'string' ) {
-			throw(
-				Error('The first argument(slider) of the Full_Page class needs to be a type of string.')
-			)
-		}
-		if ( !this.slider_el.startsWith('#') && !this.slider_el.startsWith('.') ) {
-			throw(
-				Error('The first argument(slider) of the Full_Page class needs to start with `#` or `.`.')
-			)
-		}
-	}
+    
+    if ( this.slider_el === undefined ) {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, is REQUIRED!` ) )
+    }
 
-	// --------------------------------------------------
+		if ( this.slider_el === null
+      || this.slider_el === '' ) {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, is INVALID. Got: (${ this.slider_el === '' ? 'empty string' : this.slider_el }) `) )
+		}
+    
+    if ( typeof this.slider_el === 'string'
+      && this.does_contain_whitespace( this.slider_el ) )
+      {
+			throw( Error(`The first argument ("slider") in "Full_Page" class, can't contain whitespace.`) )
+		}
+
+    if ( typeof this.slider_el === 'string'
+      && !this.slider_el.startsWith('#')
+      && !this.slider_el.startsWith('.') )
+      {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, needs to start with a "#" or "."` ) )
+		}
+    
+	}
 
 	/**
 	 * Gets computed translate values
