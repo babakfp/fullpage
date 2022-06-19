@@ -186,10 +186,6 @@ class Full_Page
 
 	}
 
-  does_contain_whitespace(string) {
-    return /\s/.test(string)
-  }
-
 	/* CSS Variable Stuff
 	-------------------------
 	*/
@@ -271,15 +267,34 @@ class Full_Page
 		}
 	}
 
+  is_element(obj) {
+    try {
+      // Using W3 DOM2 (works for FF, Opera and Chrome)
+      return obj instanceof HTMLElement;
+    }
+    catch(e){
+      // Browsers not supporting W3 DOM2 don't have HTMLElement and
+      // an exception is thrown and we end up here. Testing some
+      // properties that all elements have (works on IE7)
+      return (typeof obj==="object") &&
+        (obj.nodeType===1) && (typeof obj.style === "object") &&
+        (typeof obj.ownerDocument ==="object");
+    }
+  }
+
   /** */
 	validate_slider_el_arg() {
     
-		if ( typeof this.slider_el !== typeof document.body ) {
-			throw( Error(`The first argument ("slider") in "Full_Page" class, is INVALID.`) )
-		}
+    if ( typeof this.slider_el === 'undefined' ) {
+			throw( Error(`The first argument ("slider") in the "Full_Page" class, is REQUIRED.`) )
+    }
+
+    if ( !this.is_element(this.slider_el) ) {
+			throw( Error(`The first argument ("slider") in the "Full_Page" class, is INVALID or is not a type of element, or it doesn't exist.`) )
+    }
     
     if ( !this.slider_el.classList.contains('fp-slider') ) {
-			throw( Error(`The first argument ("slider") in "Full_Page" class, must contain the "fp-slider" calss.`) )
+			throw( Error(`The first argument ("slider") in the "Full_Page" class, must contain the "fp-slider" calss.`) )
     }
     
 	}
