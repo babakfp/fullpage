@@ -9,11 +9,11 @@ class Full_Page
 	{
 		this.slider_node = _slider_node
 		this.options = _options
-
+    
 		// Default Options Here:
-		this.options.some_option = this.options.some_option || 'default'
-		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
-		this.options.allow_free_scroll = this.options.allow_free_scroll || false
+		this.options.some_option = this.options.some_option ?? 'default'
+		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots ?? true
+		this.options.allow_free_scroll = this.options.allow_free_scroll ?? false
 
 		this.validating_constructor_slider_node()
 		this.validating_constructor_options()
@@ -29,17 +29,16 @@ class Full_Page
 		this.dots_el
 		this.create_dots()
 		this.dot_nodes = this.slider_node.querySelectorAll('.fp-dot')
+    this.dot_nodes[this.active_slide_index].classList.add('active')
 
 		this.dot_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fp-dot-action').addEventListener('click', _=> {
 				this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
 
-				if ( ! dot.classList.contains('active') ) {
-					dot.classList.add('active')
-					this.active_slide_index = i
-					this.set_slide_translateY()
-				}
+        dot.classList.add('active')
+        this.active_slide_index = i
+        this.set_slide_translateY()
 			})
 
 		})
