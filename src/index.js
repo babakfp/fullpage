@@ -15,11 +15,7 @@ class Full_Page
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
 		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
-		this.throw_error_if_slider_argument_invalid()
-		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
-		this.throw_error_if_slider_el_did_not_exist()
-
-		// this.slide_wrapper_el = this.slider_el.querySelector('.fp-slide-wrapper')
+		this.validate_slider_el_arg()
 		
 		// TODO: Validate
 		this.slide_nodes = this.slider_el.querySelectorAll('.fp-slide')
@@ -231,14 +227,6 @@ class Full_Page
 		}
 	}
 
-	throw_error_if_slider_el_did_not_exist() {
-		if ( this.slider_el === null ) {
-			throw(
-				Error('The referenced .fp-slider element could not be found.')
-			)
-		}
-	}
-
 	/**
 	 * Gets computed translate values
 	 * @param {HTMLElement} element
@@ -284,36 +272,25 @@ class Full_Page
 	}
 
   /** */
-	throw_error_if_slider_argument_invalid() {
+	validate_slider_el_arg() {
     
-    if ( this.slider_el === undefined ) {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, is REQUIRED!` ) )
+		if ( typeof this.slider_el !== typeof document.body ) {
+			throw( Error(`The first argument ("slider") in "Full_Page" class, is INVALID.`) )
+		}
+    
+    if ( !this.slider_el.classList.contains('fp-slider') ) {
+			throw( Error(`The first argument ("slider") in "Full_Page" class, must contain the "fp-slider" calss.`) )
     }
-
-		if ( this.slider_el === null
-      || this.slider_el === '' ) {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, is INVALID. Got: (${ this.slider_el === '' ? 'empty string' : this.slider_el }) `) )
-		}
-    
-    if ( typeof this.slider_el === 'string'
-      && this.does_contain_whitespace( this.slider_el ) )
-      {
-			throw( Error(`The first argument ("slider") in "Full_Page" class, can't contain whitespace.`) )
-		}
-
-    if ( typeof this.slider_el === 'string'
-      && !this.slider_el.startsWith('#')
-      && !this.slider_el.startsWith('.') )
-      {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, needs to start with a "#" or "."` ) )
-		}
     
 	}
 
 }
 
 window.addEventListener('load', _=> {
-	const mySlider = new Full_Page('#my-slider', {
-		some_option: 'false',
-	})
+	new Full_Page(
+    document.querySelector('#my-slider'),
+    {
+      some_option: 'false',
+    }
+  )
 })
