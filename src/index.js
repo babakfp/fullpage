@@ -26,15 +26,15 @@ class Full_Page
 
 		// -------------------------------------------
 		
-		this.dots_el
+		this.dots_nav_node
 		this.create_dots()
-		this.dot_nodes = this.slider_node.querySelectorAll('.fp-dot')
-    this.dot_nodes[this.active_slide_index].classList.add('active')
+		this.dot_nav_item_nodes = this.slider_node.querySelectorAll('.fp-dot')
+    this.dot_nav_item_nodes[this.active_slide_index].classList.add('active')
 
-		this.dot_nodes.forEach((dot, i) => {
+		this.dot_nav_item_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fp-dot-action').addEventListener('click', _=> {
-				this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
+				this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
 
         dot.classList.add('active')
         this.active_slide_index = i
@@ -125,8 +125,8 @@ class Full_Page
 	// -------------------------------------------
 
 	update_dots_activeness() {
-    this.dot_nodes.forEach(dot => dot.classList.remove('active'))
-		this.dot_nodes[this.active_slide_index].classList.add('active')
+    this.dot_nav_item_nodes.forEach(dot => dot.classList.remove('active'))
+		this.dot_nav_item_nodes[this.active_slide_index].classList.add('active')
 	}
 
 	scroll_to_next_slide() {
@@ -181,8 +181,8 @@ class Full_Page
 
 		nav.appendChild(ul)
 
-		this.dots_el = nav
-		this.slider_node.appendChild(this.dots_el)
+		this.dots_nav_node = nav
+		this.slider_node.appendChild(this.dots_nav_node)
 
 	}
 
