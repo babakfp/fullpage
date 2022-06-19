@@ -16,6 +16,7 @@ class Full_Page
 		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
 		this.validating_constructor_slider_node()
+		this.validating_constructor_options()
 		
 		// TODO: Validate
 		this.slide_nodes = this.slider_node.querySelectorAll('.fp-slide')
@@ -298,5 +299,13 @@ class Full_Page
     }
     
 	}
+
+  validating_constructor_options() {
+
+    if ( typeof this.options !== 'object' ) {
+			throw( Error(`The second argument ("option") in the "Full_Page" class, must be a type of object.`) )
+    }
+
+  }
 
 }
