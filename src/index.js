@@ -15,7 +15,7 @@ class Full_Page
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
 		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
-		this.throw_error_if_slider_arg_was_not_valid()
+		this.throw_error_if_slider_argument_invalid()
 		this.slider_el = document.querySelector(`.fp-slider${this.slider_el}`)
 		this.throw_error_if_slider_el_did_not_exist()
 
@@ -239,32 +239,6 @@ class Full_Page
 		}
 	}
 
-	throw_error_if_slider_arg_was_not_valid() {
-    
-    if ( this.slider_el === undefined ) {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, is REQUIRED!` ) )
-    }
-
-		if ( this.slider_el === null
-      || this.slider_el === '' ) {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, is INVALID. Got: (${ this.slider_el === '' ? 'empty string' : this.slider_el }) `) )
-		}
-    
-    if ( typeof this.slider_el === 'string'
-      && this.does_contain_whitespace( this.slider_el ) )
-      {
-			throw( Error(`The first argument ("slider") in "Full_Page" class, can't contain whitespace.`) )
-		}
-
-    if ( typeof this.slider_el === 'string'
-      && !this.slider_el.startsWith('#')
-      && !this.slider_el.startsWith('.') )
-      {
-			throw( Error( `The first argument ("slider") in "Full_Page" class, needs to start with a "#" or "."` ) )
-		}
-    
-	}
-
 	/**
 	 * Gets computed translate values
 	 * @param {HTMLElement} element
@@ -307,6 +281,33 @@ class Full_Page
 				z: parseInt(matrixValues[14]),
 			}
 		}
+	}
+
+  /** */
+	throw_error_if_slider_argument_invalid() {
+    
+    if ( this.slider_el === undefined ) {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, is REQUIRED!` ) )
+    }
+
+		if ( this.slider_el === null
+      || this.slider_el === '' ) {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, is INVALID. Got: (${ this.slider_el === '' ? 'empty string' : this.slider_el }) `) )
+		}
+    
+    if ( typeof this.slider_el === 'string'
+      && this.does_contain_whitespace( this.slider_el ) )
+      {
+			throw( Error(`The first argument ("slider") in "Full_Page" class, can't contain whitespace.`) )
+		}
+
+    if ( typeof this.slider_el === 'string'
+      && !this.slider_el.startsWith('#')
+      && !this.slider_el.startsWith('.') )
+      {
+			throw( Error( `The first argument ("slider") in "Full_Page" class, needs to start with a "#" or "."` ) )
+		}
+    
 	}
 
 }
