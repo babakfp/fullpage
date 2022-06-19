@@ -15,7 +15,7 @@ class Full_Page
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots || true
 		this.options.allow_free_scroll = this.options.allow_free_scroll || false
 
-		this.validate_slider_node_arg()
+		this.validating_constructor_slider_node()
 		
 		// TODO: Validate
 		this.slide_nodes = this.slider_node.querySelectorAll('.fp-slide')
@@ -283,7 +283,7 @@ class Full_Page
   }
 
   /** */
-	validate_slider_node_arg() {
+	validating_constructor_slider_node() {
     
     if ( typeof this.slider_node === 'undefined' ) {
 			throw( Error(`The first argument ("slider") in the "Full_Page" class, is REQUIRED.`) )
