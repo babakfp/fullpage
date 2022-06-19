@@ -285,12 +285,3 @@ class Full_Page
 	}
 
 }
-
-window.addEventListener('load', _=> {
-	new Full_Page(
-    document.querySelector('#my-slider'),
-    {
-      some_option: 'false',
-    }
-  )
-})
