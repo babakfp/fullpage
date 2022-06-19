@@ -161,16 +161,22 @@ class Full_Page
 			const li = document.createElement('li')
 			li.classList.add('fp-dot')
 
+      const tooltip = document.createElement('span')
+			tooltip.classList.add('fp-dot-tooltip')
+      tooltip.innerText = this.slide_nodes[i - 1].getAttribute('data-tooltip')
+
 			if (this.options.use_buttons_for_dots === true) {
 	
 				const button = document.createElement('button')
 				button.classList.add('fp-dot-action')
+				button.appendChild(tooltip)
 				li.appendChild(button)
 	
 			} else {
 	
 				const a = document.createElement('a')
 				a.classList.add('fp-dot-action')
+				a.appendChild(tooltip)
 				li.appendChild(a)
 	
 			}

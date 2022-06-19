@@ -50,8 +50,15 @@ body {
 	list-style: none;
 }
 
+.fp-dot:hover .fp-dot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
 .fp-dot-action {
 	all: unset;
+  position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -77,6 +84,22 @@ body {
 .fp-dot.active .fp-dot-action::after {
 	width: var(--fp-dot-action-active-size);
 	height: var(--fp-dot-action-active-size);
+}
+
+.fp-dot-tooltip {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%) translateX(-.25rem);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  background: rgb(255 255 255 / 5%);
+  padding: .25rem .5rem;
+  border-radius: .5rem;
+  transition: 300ms;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* Test */
