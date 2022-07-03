@@ -1,5 +1,6 @@
 :root {
 	--fp-translateY: 0;
+	--fp-translateX: 0;
 	--fp-scroll-speed: 1000ms;
 
 	--fp-dot-size: 1rem;
@@ -24,9 +25,36 @@ body {
 	box-sizing: border-box;
 }
 
+.fp-slider--horizontal .fp-slide-wrapper {
+  display: flex;
+}
+
+.fp-slider--horizontal .fp-slide {
+  min-width: 100vw;
+}
+
+.fp-slider--horizontal .fp-dots {
+  top: unset;
+  bottom: 1rem;
+  right: 50%;
+	transform: translateX(50%);
+}
+
+.fp-slider--horizontal .fp-dots ul {
+  display: flex;
+}
+
+.fp-slider--horizontal .fp-dot-tooltip {
+  top: unset;
+  right: unset;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-.25rem);
+}
+
 .fp-slide-wrapper {
   display: grid;
-	transform: translateY(var(--fp-translateY));
+	transform: translateY(var(--fp-translateY)) translateX(var(--fp-translateX));
 	transition: transform var(--fp-scroll-speed) ease-in-out;
 }
 
@@ -48,6 +76,7 @@ body {
 .fp-dots ul {
 	display: grid;
 	list-style: none;
+  margin: 0;
 }
 
 .fp-dot:hover .fp-dot-tooltip {

@@ -11,13 +11,17 @@ class Fullpage
 		this.options = _options
     
 		// Default Options Here:
-		this.options.some_option = this.options.some_option ?? 'default'
+		this.options.is_horizontal = this.options.is_horizontal ?? false
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots ?? true
 		this.options.allow_free_scroll = this.options.allow_free_scroll ?? false
 
 		this.validating_constructor_slider_node()
 		this.validating_constructor_options()
 		
+    if (this.options.is_horizontal) {
+      this.slider_node.classList.add('fp-slider--horizontal')
+    }
+
 		// TODO: Validate
 		this.slide_nodes = this.slider_node.querySelectorAll('.fp-slide')
 		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fp-slide')
@@ -38,7 +42,7 @@ class Fullpage
 
         dot.classList.add('active')
         this.active_slide_index = i
-        this.set_slide_translateY()
+        this.set_slide_translate()
 			})
 
 		})
@@ -50,7 +54,7 @@ class Fullpage
 		this.on_scroll()
 
     // Fix position when height resize
-    window.addEventListener('resize', _=> this.set_slide_translateY())
+    window.addEventListener('resize', _=> this.set_slide_translate())
   }
 
   on_scroll() {
@@ -87,16 +91,20 @@ class Fullpage
 	}
 
 	do_scroll_stuff(e) {
-		if (e.deltaY > 0) {
+		if (this.options.is_horizontal ? e.deltaY > 0 : e.deltaX > 0) {
 			this.scroll_to_next_slide()
 		} else {
 			this.scroll_to_prev_slide()
 		}
-		this.set_slide_translateY()
+		this.set_slide_translate()
 	}
 
-	set_slide_translateY() {
-		return this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+	set_slide_translate() {
+    if (this.options.is_horizontal) {
+  		return this.set_css_var('--fp-translateX', `-${this.active_slide_index * window.innerWidth}px`)
+    } else {
+      return this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+    }
 	}
 
 	get_active_slide_el() {
