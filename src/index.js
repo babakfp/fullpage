@@ -10,8 +10,8 @@ class Fullpage
 		this.slider_node = _slider_node
 		this.options = _options
 
-		this.validating_constructor_slider_node()
-		this.validating_constructor_options()
+		this.validate_constructor__slider_node()
+		this.validate_constructor__options()
 
 		// Default Options Here:
 		this.options.is_horizontal = this.options.is_horizontal ?? false
@@ -287,7 +287,7 @@ class Fullpage
   }
 
   /** */
-	validating_constructor_slider_node() {
+	validate_constructor__slider_node() {
 
     const textPrefix = 'The first argument ("slider") in the "Fullpage" class,'
 
@@ -306,7 +306,7 @@ class Fullpage
 
 	}
 
-  validating_constructor_options() {
+  validate_constructor__options() {
 
     if ( typeof this.options !== 'object' ) {
 			throw( Error(`The second argument ("option") in the "Fullpage" class, must be a type of object.`) )
