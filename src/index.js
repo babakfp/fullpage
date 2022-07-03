@@ -288,19 +288,22 @@ class Fullpage
 
   /** */
 	validating_constructor_slider_node() {
-    
+
+    const textPrefix = 'The first argument ("slider") in the "Fullpage" class,'
+
     if ( typeof this.slider_node === 'undefined' ) {
-			throw( Error(`The first argument ("slider") in the "Fullpage" class, is REQUIRED.`) )
+			throw( Error(`${textPrefix} is required.`) )
+    }
+    else if ( this.slider_node === document || this.slider_node === document.body || this.slider_node === document.head ) {
+			throw( Error(`${textPrefix} must be an element inside "document.body".`) )
+    }
+    else if ( !this.is_element(this.slider_node) ) {
+			throw( Error(`${textPrefix} is invalid or is not a type of element, or doesn't exist.`) )
+    }
+    else if ( !this.slider_node.classList.contains('fp-slider') ) {
+			throw( Error(`${textPrefix} must contain the "fp-slider" calss.`) )
     }
 
-    if ( !this.is_element(this.slider_node) ) {
-			throw( Error(`The first argument ("slider") in the "Fullpage" class, is INVALID or is not a type of element, or it doesn't exist.`) )
-    }
-    
-    if ( !this.slider_node.classList.contains('fp-slider') ) {
-			throw( Error(`The first argument ("slider") in the "Fullpage" class, must contain the "fp-slider" calss.`) )
-    }
-    
 	}
 
   validating_constructor_options() {
