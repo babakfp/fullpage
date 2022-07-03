@@ -1,7 +1,8 @@
 :root {
 	--fp-translateY: 0;
 	--fp-translateX: 0;
-	--fp-scroll-speed: 1000ms;
+	--fp-scroll-speed: 700ms;
+  --fp-transition-timing-function: ease-in-out;
 
 	--fp-dot-size: 1rem;
 	--fp-dot-action-size: .25rem;
@@ -55,7 +56,9 @@ body {
 .fp-slide-wrapper {
   display: grid;
 	transform: translateY(var(--fp-translateY)) translateX(var(--fp-translateX));
-	transition: transform var(--fp-scroll-speed) ease-in-out;
+  transition-property: transform, opacity;
+  transition-duration: var(--fp-scroll-speed);
+  transition-timing-function: var(--fp-transition-timing-function)
 }
 
 .fp-slider,
