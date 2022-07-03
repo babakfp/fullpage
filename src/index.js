@@ -9,14 +9,14 @@ class Fullpage
 	{
 		this.slider_node = _slider_node
 		this.options = _options
-    
+
+		this.validating_constructor_slider_node()
+		this.validating_constructor_options()
+
 		// Default Options Here:
 		this.options.is_horizontal = this.options.is_horizontal ?? false
 		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots ?? true
 		this.options.allow_free_scroll = this.options.allow_free_scroll ?? false
-
-		this.validating_constructor_slider_node()
-		this.validating_constructor_options()
 		
     if (this.options.is_horizontal) {
       this.slider_node.classList.add('fp-slider--horizontal')
