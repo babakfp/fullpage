@@ -19,12 +19,9 @@
 
     <script>
       window.addEventListener('load', _=> {
-        new Full_Page(
-          document.querySelector('#my-slider'),
-          {
-            some_option: 'false',
-          }
-        )
+        const mySlider = new Full_Page(document.querySelector('#my-slider'), {
+          some_option: 'false',
+        })
       })
     </script>
 
