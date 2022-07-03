@@ -1,5 +1,5 @@
 /**
- * Full Page Scroll
+ * FullPage
  * @param _slider_node {HTMLElement} Main element
  * @param _options {Object}
  */
@@ -10,14 +10,15 @@ class Fullpage
 		this.slider_node = _slider_node
 		this.options = _options
 
+    // Validating the arguments
 		this.validate_constructor__slider_node()
 		this.validate_constructor__options()
 
-		// Default Options Here:
+		// Setting the default options
 		this.options.is_horizontal = this.options.is_horizontal ?? false
-		this.options.use_buttons_for_dots = this.options.use_buttons_for_dots ?? true
-		this.options.allow_free_scroll = this.options.allow_free_scroll ?? false
-		
+		this.options.dots_use_link = this.options.dots_use_link ?? false
+		this.options.allow_free_movement = this.options.allow_free_movement ?? false
+
     if (this.options.is_horizontal) {
       this.slider_node.classList.add('fp-slider--horizontal')
     }
@@ -60,7 +61,7 @@ class Fullpage
   on_scroll() {
 		this.slider_node.addEventListener('wheel', e => {
 
-			if (this.allow_free_scroll === true) {
+			if (this.allow_free_movement === true) {
 
 				this.do_scroll_stuff(e)
 			
@@ -163,19 +164,19 @@ class Fullpage
 			tooltip.classList.add('fp-dot-tooltip')
       tooltip.innerText = this.slide_nodes[i - 1].getAttribute('data-tooltip')
 
-			if (this.options.use_buttons_for_dots === true) {
-	
-				const button = document.createElement('button')
-				button.classList.add('fp-dot-action')
-				button.appendChild(tooltip)
-				li.appendChild(button)
-	
-			} else {
+			if (this.options.dots_use_link) {
 	
 				const a = document.createElement('a')
 				a.classList.add('fp-dot-action')
 				a.appendChild(tooltip)
 				li.appendChild(a)
+	
+			} else {
+	
+				const button = document.createElement('button')
+				button.classList.add('fp-dot-action')
+				button.appendChild(tooltip)
+				li.appendChild(button)
 	
 			}
 	
@@ -286,7 +287,12 @@ class Fullpage
     }
   }
 
-  /** */
+  /**
+   * ------------------------------------------------------------------------------------
+   * Validating the arguments
+   * ------------------------------------------------------------------------------------
+   */
+
 	validate_constructor__slider_node() {
 
     const textPrefix = 'The first argument ("slider") in the "Fullpage" class,'
