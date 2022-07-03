@@ -3,7 +3,7 @@
  * @param _slider_node {HTMLElement} Main element
  * @param _options {Object}
  */
-class Full_Page
+class Fullpage
 {
 	constructor(_slider_node, _options={})
 	{
@@ -282,15 +282,15 @@ class Full_Page
 	validating_constructor_slider_node() {
     
     if ( typeof this.slider_node === 'undefined' ) {
-			throw( Error(`The first argument ("slider") in the "Full_Page" class, is REQUIRED.`) )
+			throw( Error(`The first argument ("slider") in the "Fullpage" class, is REQUIRED.`) )
     }
 
     if ( !this.is_element(this.slider_node) ) {
-			throw( Error(`The first argument ("slider") in the "Full_Page" class, is INVALID or is not a type of element, or it doesn't exist.`) )
+			throw( Error(`The first argument ("slider") in the "Fullpage" class, is INVALID or is not a type of element, or it doesn't exist.`) )
     }
     
     if ( !this.slider_node.classList.contains('fp-slider') ) {
-			throw( Error(`The first argument ("slider") in the "Full_Page" class, must contain the "fp-slider" calss.`) )
+			throw( Error(`The first argument ("slider") in the "Fullpage" class, must contain the "fp-slider" calss.`) )
     }
     
 	}
@@ -298,7 +298,7 @@ class Full_Page
   validating_constructor_options() {
 
     if ( typeof this.options !== 'object' ) {
-			throw( Error(`The second argument ("option") in the "Full_Page" class, must be a type of object.`) )
+			throw( Error(`The second argument ("option") in the "Fullpage" class, must be a type of object.`) )
     }
 
   }
