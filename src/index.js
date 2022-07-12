@@ -50,19 +50,11 @@ class Fullpage
 
 			dot.querySelector('.fullpage-dot-action').addEventListener('click', _=> {
         if (this.options.allow_free_movement === true) {
-          this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
-
-          dot.classList.add('active')
-          this.active_slide_index = i
-          this.set_slide_translate()
+          this.navDotOnClick(dot, i)
         } else if (this.allow_dot_click) {
           this.allow_dot_click = false
 
-          this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
-
-          dot.classList.add('active')
-          this.active_slide_index = i
-          this.set_slide_translate()
+          this.navDotOnClick(dot, i)
       
           setTimeout(_=> {
             this.allow_dot_click = true
@@ -110,6 +102,13 @@ class Fullpage
 
     })
 	}
+
+  navDotOnClick(dot, i) {
+    this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
+    dot.classList.add('active')
+    this.active_slide_index = i
+    this.set_slide_translate()
+  }
 
   getViewPercentage(element) {
     const viewport = {
