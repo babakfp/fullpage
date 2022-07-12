@@ -49,16 +49,31 @@ class Fullpage
 		this.dot_nav_item_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fullpage-dot-action').addEventListener('click', _=> {
-				this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
+        if (this.options.allow_free_movement === true) {
+          this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
 
-        dot.classList.add('active')
-        this.active_slide_index = i
-        this.set_slide_translate()
+          dot.classList.add('active')
+          this.active_slide_index = i
+          this.set_slide_translate()
+        } else if (this.allow_dot_click) {
+          this.allow_dot_click = false
+
+          this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
+
+          dot.classList.add('active')
+          this.active_slide_index = i
+          this.set_slide_translate()
+      
+          setTimeout(_=> {
+            this.allow_dot_click = true
+          }, this.get_scroll_speed_for_allow_scroll())
+        }
 			})
 
 		})
 
-		this.allow_scroll = true
+		this.allow_wheel_scroll = true
+		this.allow_dot_click = true
 
 		// ------------------------------
 
@@ -82,13 +97,13 @@ class Fullpage
 
 				this.do_scroll_stuff(e)
 			
-			} else if (this.allow_scroll) {
+			} else if (this.allow_wheel_scroll) {
 
-				this.allow_scroll = false
+				this.allow_wheel_scroll = false
 				this.do_scroll_stuff(e)
 	
 				setTimeout(_=> {
-					this.allow_scroll = true
+					this.allow_wheel_scroll = true
 				}, this.get_scroll_speed_for_allow_scroll())
 
 			}
