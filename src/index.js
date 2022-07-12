@@ -78,7 +78,7 @@ class Fullpage
   on_scroll() {
 		this.slider_node.addEventListener('wheel', e => {
 
-			if (this.allow_free_movement === true) {
+			if (this.options.allow_free_movement === true) {
 
 				this.do_scroll_stuff(e)
 			
@@ -93,7 +93,7 @@ class Fullpage
 
 			}
 
-		})
+    })
 	}
 
   getViewPercentage(element) {
