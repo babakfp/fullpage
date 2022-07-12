@@ -29,6 +29,16 @@ class Fullpage
 
 		this.active_slide_index = 0
 
+    let all_percentages = []
+    this.slide_nodes.forEach(element => {
+      all_percentages.push(this.getViewPercentage(element))
+    })
+    const all_percentages_highest_value = Math.max(...all_percentages)
+    this.active_slide_index = all_percentages.indexOf(all_percentages_highest_value)
+    console.log(all_percentages);
+    console.log(this.active_slide_index);
+    this.set_slide_translate()
+
 		// -------------------------------------------
 		
 		this.dots_nav_node
@@ -55,7 +65,14 @@ class Fullpage
 		this.on_scroll()
 
     // Fix position when height resize
-    window.addEventListener('resize', _=> this.set_slide_translate())
+    const copy_of_original_scroll_speed = this.get_css_var('--fp-scroll-speed')
+    window.addEventListener('resize', _=> {
+      this.set_css_var('--fp-scroll-speed', '0ms')
+      this.set_slide_translate()
+      setTimeout(_=> {
+        this.set_css_var('--fp-scroll-speed', copy_of_original_scroll_speed)
+      }, 150)
+    })
   }
 
   on_scroll() {
@@ -78,6 +95,48 @@ class Fullpage
 
 		})
 	}
+
+  getViewPercentage(element) {
+    const viewport = {
+      top: window.pageYOffset,
+      bottom: window.pageYOffset + window.innerHeight
+    };
+  
+    const elementBoundingRect = element.getBoundingClientRect();
+    const elementPos = {
+      top: elementBoundingRect.y + window.pageYOffset,
+      bottom: elementBoundingRect.y + elementBoundingRect.height + window.pageYOffset
+    };
+  
+    if (viewport.top > elementPos.bottom || viewport.bottom < elementPos.top) {
+      return 0;
+    }
+  
+    // Element is fully within viewport
+    if (viewport.top < elementPos.top && viewport.bottom > elementPos.bottom) {
+      return 100;
+    }
+  
+    // Element is bigger than the viewport
+    if (elementPos.top < viewport.top && elementPos.bottom > viewport.bottom) {
+      return 100;
+    }
+  
+    const elementHeight = elementBoundingRect.height;
+    let elementHeightInView = elementHeight;
+  
+    if (elementPos.top < viewport.top) {
+      elementHeightInView = elementHeight - (window.pageYOffset - elementPos.top);
+    }
+  
+    if (elementPos.bottom > viewport.bottom) {
+      elementHeightInView = elementHeightInView - (elementPos.bottom - viewport.bottom);
+    }
+  
+    const percentageInView = (elementHeightInView / window.innerHeight) * 100;
+  
+    return Math.round(percentageInView);
+  }
 
 	// Gets the values based on is the element in the viewport
 	rect_values (el) {
@@ -102,9 +161,9 @@ class Fullpage
 
 	set_slide_translate() {
     if (this.options.is_horizontal) {
-  		return this.set_css_var('--fp-translateX', `-${this.active_slide_index * window.innerWidth}px`)
+  		this.set_css_var('--fp-translateX', `-${this.active_slide_index * window.innerWidth}px`)
     } else {
-      return this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+      this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
     }
 	}
 
@@ -201,7 +260,7 @@ class Fullpage
 	 * @param css_var_value {String}
 	 */
 	set_css_var(css_var_name, css_var_value) {
-		return document.documentElement.style.setProperty(css_var_name, css_var_value)
+		document.documentElement.style.setProperty(css_var_name, css_var_value)
 	}
 
 	/**
