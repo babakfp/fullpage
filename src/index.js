@@ -20,12 +20,12 @@ class Fullpage
 		this.options.allow_free_movement = this.options.allow_free_movement ?? false
 
     if (this.options.is_horizontal) {
-      this.slider_node.classList.add('fp-slider--horizontal')
+      this.slider_node.classList.add('fullpage--horizontal')
     }
 
 		// TODO: Validate
-		this.slide_nodes = this.slider_node.querySelectorAll('.fp-slide')
-		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fp-slide')
+		this.slide_nodes = this.slider_node.querySelectorAll('.fullpage-slide')
+		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fullpage-slide')
 
 		this.active_slide_index = 0
 
@@ -43,12 +43,12 @@ class Fullpage
 		
 		this.dots_nav_node
 		this.create_dots()
-		this.dot_nav_item_nodes = this.slider_node.querySelectorAll('.fp-dot')
+		this.dot_nav_item_nodes = this.slider_node.querySelectorAll('.fullpage-dot')
     this.dot_nav_item_nodes[this.active_slide_index].classList.add('active')
 
 		this.dot_nav_item_nodes.forEach((dot, i) => {
 
-			dot.querySelector('.fp-dot-action').addEventListener('click', _=> {
+			dot.querySelector('.fullpage-dot-action').addEventListener('click', _=> {
 				this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
 
         dot.classList.add('active')
@@ -65,12 +65,12 @@ class Fullpage
 		this.on_scroll()
 
     // Fix position when height resize
-    const copy_of_original_scroll_speed = this.get_css_var('--fp-scroll-speed')
+    const copy_of_original_scroll_speed = this.get_css_var('--fullpage-scroll-speed')
     window.addEventListener('resize', _=> {
-      this.set_css_var('--fp-scroll-speed', '0ms')
+      this.set_css_var('--fullpage-scroll-speed', '0ms')
       this.set_slide_translate()
       setTimeout(_=> {
-        this.set_css_var('--fp-scroll-speed', copy_of_original_scroll_speed)
+        this.set_css_var('--fullpage-scroll-speed', copy_of_original_scroll_speed)
       }, 150)
     })
   }
@@ -161,9 +161,9 @@ class Fullpage
 
 	set_slide_translate() {
     if (this.options.is_horizontal) {
-  		this.set_css_var('--fp-translateX', `-${this.active_slide_index * window.innerWidth}px`)
+  		this.set_css_var('--fullpage-translateX', `-${this.active_slide_index * window.innerWidth}px`)
     } else {
-      this.set_css_var('--fp-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+      this.set_css_var('--fullpage-translateY', `-${this.active_slide_index * window.innerHeight}px`)
     }
 	}
 
@@ -177,7 +177,7 @@ class Fullpage
 	 * 100% | 1000ms
 	 */
 	get_scroll_speed_for_allow_scroll() {
-		const speedCssVar = this.get_css_var('--fp-scroll-speed')
+		const speedCssVar = this.get_css_var('--fullpage-scroll-speed')
 		const speed = speedCssVar.substring(0, speedCssVar.length - 2)
     return speed * 90 / 100
 	}
@@ -210,30 +210,30 @@ class Fullpage
 	create_dots() {
 
 		const nav = document.createElement('nav')
-		nav.classList.add('fp-dots')
+		nav.classList.add('fullpage-dots')
 		
 		const ul = document.createElement('ul')
 
 		for (let i = 1; i <= this.slide_nodes.length; i++) {
 
 			const li = document.createElement('li')
-			li.classList.add('fp-dot')
+			li.classList.add('fullpage-dot')
 
       const tooltip = document.createElement('span')
-			tooltip.classList.add('fp-dot-tooltip')
+			tooltip.classList.add('fullpage-dot-tooltip')
       tooltip.innerText = this.slide_nodes[i - 1].getAttribute('data-tooltip')
 
 			if (this.options.dots_use_link) {
 	
 				const a = document.createElement('a')
-				a.classList.add('fp-dot-action')
+				a.classList.add('fullpage-dot-action')
 				a.appendChild(tooltip)
 				li.appendChild(a)
 	
 			} else {
 	
 				const button = document.createElement('button')
-				button.classList.add('fp-dot-action')
+				button.classList.add('fullpage-dot-action')
 				button.appendChild(tooltip)
 				li.appendChild(button)
 	
@@ -365,8 +365,8 @@ class Fullpage
     else if ( !this.is_element(this.slider_node) ) {
 			throw( Error(`${textPrefix} is invalid or is not a type of element, or doesn't exist.`) )
     }
-    else if ( !this.slider_node.classList.contains('fp-slider') ) {
-			throw( Error(`${textPrefix} must contain the "fp-slider" calss.`) )
+    else if ( !this.slider_node.classList.contains('fullpage') ) {
+			throw( Error(`${textPrefix} must contain the "fullpage" calss.`) )
     }
 
 	}

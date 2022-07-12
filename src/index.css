@@ -1,13 +1,13 @@
 :root {
-	--fp-translateY: 0;
-	--fp-translateX: 0;
-	--fp-scroll-speed: 700ms;
-  --fp-transition-timing-function: ease-in-out;
+	--fullpage-translateY: 0;
+	--fullpage-translateX: 0;
+	--fullpage-scroll-speed: 700ms;
+  --fullpage-transition-timing-function: ease-in-out;
 
-	--fp-dot-size: 1rem;
-	--fp-dot-action-size: .25rem;
-	--fp-dot-action-hover-size: .5rem;
-	--fp-dot-action-active-size: .75rem;
+	--fullpage-dot-size: 1rem;
+	--fullpage-dot-action-size: .25rem;
+	--fullpage-dot-action-hover-size: .5rem;
+	--fullpage-dot-action-active-size: .75rem;
 }
 
 html,
@@ -20,32 +20,32 @@ body {
 	overflow: hidden;
 }
 
-.fp-slider,
-.fp-slider * {
+.fullpage,
+.fullpage * {
 	padding: 0;
 	box-sizing: border-box;
 }
 
-.fp-slider--horizontal .fp-slide-wrapper {
+.fullpage--horizontal .fullpage-slide-wrapper {
   display: flex;
 }
 
-.fp-slider--horizontal .fp-slide {
+.fullpage--horizontal .fullpage-slide {
   min-width: 100vw;
 }
 
-.fp-slider--horizontal .fp-dots {
+.fullpage--horizontal .fullpage-dots {
   top: unset;
   bottom: 1rem;
   right: 50%;
 	transform: translateX(50%);
 }
 
-.fp-slider--horizontal .fp-dots ul {
+.fullpage--horizontal .fullpage-dots ul {
   display: flex;
 }
 
-.fp-slider--horizontal .fp-dot-tooltip {
+.fullpage--horizontal .fullpage-dot-tooltip {
   top: unset;
   right: unset;
   bottom: 100%;
@@ -53,72 +53,72 @@ body {
   transform: translateX(-50%) translateY(-.25rem);
 }
 
-.fp-slide-wrapper {
+.fullpage-slide-wrapper {
   display: grid;
-	transform: translateY(var(--fp-translateY)) translateX(var(--fp-translateX));
+	transform: translateY(var(--fullpage-translateY)) translateX(var(--fullpage-translateX));
   transition-property: transform, opacity;
-  transition-duration: var(--fp-scroll-speed);
-  transition-timing-function: var(--fp-transition-timing-function)
+  transition-duration: var(--fullpage-scroll-speed);
+  transition-timing-function: var(--fullpage-transition-timing-function)
 }
 
-.fp-slider,
-.fp-slide {
+.fullpage,
+.fullpage-slide {
 	position: relative;
 	display: block;
 	width: 100%;
 	height: 100vh;
 }
 
-.fp-dots {
+.fullpage-dots {
 	position: fixed;
 	right: 1rem;
 	top: 50%;
 	transform: translateY(-50%);
 }
 
-.fp-dots ul {
+.fullpage-dots ul {
 	display: grid;
 	list-style: none;
   margin: 0;
 }
 
-.fp-dot:hover .fp-dot-tooltip {
+.fullpage-dot:hover .fullpage-dot-tooltip {
   opacity: 1;
   visibility: visible;
   pointer-events: all;
 }
 
-.fp-dot-action {
+.fullpage-dot-action {
 	all: unset;
   position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: var(--fp-dot-size);
-	height: var(--fp-dot-size);
+	width: var(--fullpage-dot-size);
+	height: var(--fullpage-dot-size);
 	cursor: pointer;
 }
 
-.fp-dot-action:hover::after {
-	width: var(--fp-dot-action-hover-size);
-	height: var(--fp-dot-action-hover-size);
+.fullpage-dot-action:hover::after {
+	width: var(--fullpage-dot-action-hover-size);
+	height: var(--fullpage-dot-action-hover-size);
 }
 
-.fp-dot-action::after {
+.fullpage-dot-action::after {
 	content: "";
-	width: var(--fp-dot-action-size);
-	height: var(--fp-dot-action-size);
+	width: var(--fullpage-dot-action-size);
+	height: var(--fullpage-dot-action-size);
 	background: white;
 	border-radius: 99px;
 	transition: 100ms ease-in-out;
 }
 
-.fp-dot.active .fp-dot-action::after {
-	width: var(--fp-dot-action-active-size);
-	height: var(--fp-dot-action-active-size);
+.fullpage-dot.active .fullpage-dot-action::after {
+	width: var(--fullpage-dot-action-active-size);
+	height: var(--fullpage-dot-action-active-size);
 }
 
-.fp-dot-tooltip {
+.fullpage-dot-tooltip {
   position: absolute;
   top: 50%;
   right: 100%;
@@ -144,25 +144,25 @@ body {
 	font-family: 'Poppins', sans-serif;
 }
 
-.fp-slider {
+.fullpage {
 	background: #E9D5DA;
 }
 
-.fp-slide {
+.fullpage-slide {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 64px;
 }
 
-.fp-slide:nth-child(1) {
+.fullpage-slide:nth-child(1) {
 	background: #827397;
 }
 
-.fp-slide:nth-child(2) {
+.fullpage-slide:nth-child(2) {
 	background: #4D4C7D;
 }
 
-.fp-slide:nth-child(3) {
+.fullpage-slide:nth-child(3) {
 	background: #363062;
 }
