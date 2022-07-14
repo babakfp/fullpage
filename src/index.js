@@ -169,7 +169,8 @@ class Fullpage
 	}
 
 	do_scroll_stuff(e) {
-		if (this.options.is_horizontal ? e.deltaX > 0 : e.deltaY > 0) {
+    // Is scrolling down/right or top/left
+		if (e.deltaY > 0) {
 			this.scroll_to_next_slide()
 		} else {
 			this.scroll_to_prev_slide()
