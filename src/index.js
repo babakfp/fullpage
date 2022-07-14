@@ -10,16 +10,10 @@ class Fullpage
 		this.slider_node = _slider_node
 		this.options = _options
 
-    // Validating the arguments
+    this.set_default_options()
+
 		this.validate_constructor__slider_node()
 		this.validate_constructor__options()
-
-		// Setting the default options
-		this.options.is_horizontal = this.options.is_horizontal ?? false
-		this.options.dots_use_link = this.options.dots_use_link ?? false
-		this.options.allow_free_movement = this.options.allow_free_movement ?? false
-		this.options.back_to_top = this.options.back_to_top ?? false
-		this.options.back_to_bottom = this.options.back_to_bottom ?? false
 
     if (this.options.is_horizontal) {
       this.slider_node.classList.add('fullpage--horizontal')
@@ -37,26 +31,26 @@ class Fullpage
     })
     const all_percentages_highest_value = Math.max(...all_percentages)
     this.active_slide_index = all_percentages.indexOf(all_percentages_highest_value)
-    console.log(all_percentages);
-    console.log(this.active_slide_index);
+    // console.log(all_percentages);
+    // console.log(this.active_slide_index);
     this.set_slide_translate()
 
 		// -------------------------------------------
 		
 		this.dots_nav_node
 		this.create_dots()
-		this.dot_nav_item_nodes = this.slider_node.querySelectorAll('.fullpage-dot')
-    this.dot_nav_item_nodes[this.active_slide_index].classList.add('active')
+		this.dot_nodes = this.slider_node.querySelectorAll('.fullpage-dot')
+    this.dot_nodes[this.active_slide_index].classList.add('active')
 
-		this.dot_nav_item_nodes.forEach((dot, i) => {
+		this.dot_nodes.forEach((dot, i) => {
 
 			dot.querySelector('.fullpage-dot-action').addEventListener('click', _=> {
         if (this.options.allow_free_movement === true) {
-          this.navDotOnClick(dot, i)
+          this.handle_dots_on_click(dot, i)
         } else if (this.allow_dot_click) {
           this.allow_dot_click = false
 
-          this.navDotOnClick(dot, i)
+          this.handle_dots_on_click(dot, i)
       
           setTimeout(_=> {
             this.allow_dot_click = true
@@ -74,14 +68,22 @@ class Fullpage
 		this.on_scroll()
 
     // Fix position when height resize
-    const copy_of_original_scroll_speed = this.get_css_var('--fullpage-scroll-speed')
+    const backup_of_original_scroll_speed = this.get_css_var('--fullpage-scroll-speed')
     window.addEventListener('resize', _=> {
       this.set_css_var('--fullpage-scroll-speed', '0ms')
       this.set_slide_translate()
       setTimeout(_=> {
-        this.set_css_var('--fullpage-scroll-speed', copy_of_original_scroll_speed)
+        this.set_css_var('--fullpage-scroll-speed', backup_of_original_scroll_speed)
       }, 150)
     })
+  }
+
+  set_default_options() {
+    this.options.is_horizontal = this.options.is_horizontal ?? false
+		this.options.dots_use_link = this.options.dots_use_link ?? false
+		this.options.allow_free_movement = this.options.allow_free_movement ?? false
+		this.options.back_to_top = this.options.back_to_top ?? false
+		this.options.back_to_bottom = this.options.back_to_bottom ?? false
   }
 
   on_scroll() {
@@ -95,7 +97,7 @@ class Fullpage
 
 				this.allow_wheel_scroll = false
 				this.do_scroll_stuff(e)
-	
+
 				setTimeout(_=> {
 					this.allow_wheel_scroll = true
 				}, this.get_scroll_speed_for_allow_scroll())
@@ -105,8 +107,8 @@ class Fullpage
     })
 	}
 
-  navDotOnClick(dot, i) {
-    this.dot_nav_item_nodes.forEach(dot2 => dot2.classList.remove('active'))
+  handle_dots_on_click() {
+    this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
     dot.classList.add('active')
     this.active_slide_index = i
     this.set_slide_translate()
@@ -199,8 +201,8 @@ class Fullpage
 	}
 
 	update_dots_activeness() {
-    this.dot_nav_item_nodes.forEach(dot => dot.classList.remove('active'))
-		this.dot_nav_item_nodes[this.active_slide_index].classList.add('active')
+    this.dot_nodes.forEach(dot => dot.classList.remove('active'))
+		this.dot_nodes[this.active_slide_index].classList.add('active')
 	}
 
 	scroll_to_next_slide() {
