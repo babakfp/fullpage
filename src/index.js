@@ -18,6 +18,8 @@ class Fullpage
 		this.options.is_horizontal = this.options.is_horizontal ?? false
 		this.options.dots_use_link = this.options.dots_use_link ?? false
 		this.options.allow_free_movement = this.options.allow_free_movement ?? false
+		this.options.back_to_top = this.options.back_to_top ?? false
+		this.options.back_to_bottom = this.options.back_to_bottom ?? false
 
     if (this.options.is_horizontal) {
       this.slider_node.classList.add('fullpage--horizontal')
@@ -202,18 +204,22 @@ class Fullpage
 	}
 
 	scroll_to_next_slide() {
-		if (this.active_slide_index < this.slide_nodes.length - 1) {
+    if (this.options.back_to_top && this.active_slide_index === this.slide_nodes.length - 1) {
+      this.active_slide_index = 0
+			this.update_dots_activeness()
+    } else if (this.active_slide_index < this.slide_nodes.length - 1) {
 			this.active_slide_index += 1
-
 			this.update_dots_activeness()
 		}
 		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)
 	}
 
 	scroll_to_prev_slide() {
-		if (this.active_slide_index > 0) {
+    if (this.options.back_to_bottom && this.active_slide_index === 0) {
+      this.active_slide_index = this.slide_nodes.length - 1
+			this.update_dots_activeness()
+    } else if (this.active_slide_index > 0) {
 			this.active_slide_index -= 1
-
 			this.update_dots_activeness()
 		}
 		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)

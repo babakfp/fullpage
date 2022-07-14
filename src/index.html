@@ -19,7 +19,10 @@
 
     <script>
       window.addEventListener('load', _=> {
-        const myFullpage = new Fullpage(document.querySelector('#my-fullpage'))
+        const myFullpage = new Fullpage(document.querySelector('#my-fullpage'), {
+          back_to_top: true,
+          back_to_bottom: true,
+        })
       })
     </script>
 
