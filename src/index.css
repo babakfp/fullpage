@@ -2,7 +2,7 @@
 	--fullpage-translateY: 0;
 	--fullpage-translateX: 0;
 	--fullpage-scroll-speed: 700ms;
-  --fullpage-transition-timing-function: ease-in-out;
+  --fullpage-transition-timing-function: ease-out;
 
 	--fullpage-dot-size: 1rem;
 	--fullpage-dot-action-size: .25rem;
@@ -50,7 +50,7 @@ body {
   right: unset;
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%) translateY(-.25rem);
+  transform: translateX(-50%);
 }
 
 .fullpage-slide-wrapper {
@@ -71,7 +71,7 @@ body {
 
 .fullpage-dots {
 	position: fixed;
-	right: 1rem;
+	right: 0;
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -94,8 +94,9 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: var(--fullpage-dot-size);
-	height: var(--fullpage-dot-size);
+	width: calc(var(--fullpage-dot-size) + 1.5rem);
+	height: calc(var(--fullpage-dot-size) + .5rem);
+  padding-right: .5rem;
 	cursor: pointer;
 }
 
@@ -122,7 +123,7 @@ body {
   position: absolute;
   top: 50%;
   right: 100%;
-  transform: translateY(-50%) translateX(-.25rem);
+  transform: translateY(-50%);
   font-size: 0.75rem;
   white-space: nowrap;
   background: rgb(255 255 255 / 5%);
