@@ -36,7 +36,7 @@ class Fullpage
     this.set_slide_translate()
 
 		// -------------------------------------------
-		
+
 		this.dots_nav_node
 		this.create_dots()
 		this.dot_nodes = this.slider_node.querySelectorAll('.fullpage-dot')
@@ -107,7 +107,7 @@ class Fullpage
     })
 	}
 
-  handle_dots_on_click() {
+  handle_dots_on_click(dot, i) {
     this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
     dot.classList.add('active')
     this.active_slide_index = i
