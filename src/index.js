@@ -234,6 +234,7 @@ class Fullpage
 
 		const nav = document.createElement('nav')
 		nav.classList.add('fullpage-dots')
+    nav.classList.add('fullpage-disable-select-and-drag')
 		
 		const ul = document.createElement('ul')
 
