@@ -26,7 +26,7 @@ body {
 	box-sizing: border-box;
 }
 
-.fullpage-slide-wrapper {
+.fullpage-wrapper {
   display: grid;
 	transform: translateY(var(--fullpage-translateY)) translateX(var(--fullpage-translateX));
   transition-property: transform, opacity;
@@ -111,7 +111,7 @@ body {
 
 /*  */
 
-.fullpage--horizontal .fullpage-slide-wrapper {
+.fullpage--horizontal .fullpage-wrapper {
   display: flex;
 }
 
