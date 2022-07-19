@@ -9,38 +9,53 @@ class Fullpage
 	{
 		this.slider_node = _slider_node
 		this.options = _options
-
-    this.set_default_options()
-
 		this.validate_constructor__slider_node()
 		this.validate_constructor__options()
+    this.set_default_options()
 
-    if (this.options.is_horizontal) {
-      this.slider_node.classList.add('fullpage--horizontal')
-    }
+		this.active_index = 0
+    this.prev_active_index
 
-		// TODO: Validate
+    // Add horizontal class
+    if (this.options.is_horizontal) this.slider_node.classList.add('fullpage--horizontal')
+
 		this.slide_nodes = this.slider_node.querySelectorAll('.fullpage-slide')
-		this.throw_error_if_el_could_not_be_found(this.slide_nodes, '.fullpage-slide')
+    if (!this.slide_nodes) throw( Error(`The referenced .fullpage-slide element could not be found.`) )
 
-		this.active_slide_index = 0
+    // this.slide_nodes.forEach((slide_node, i) => {
+    //   if (slide_node.classList.contains('fullpage-slide--has-inner')) {
+    //     const inner_slides = slide_node.querySelectorAll('.fullpage-inner-slide')
+    //     slide_node.has_child_slides = true
+    //     slide_node.length = inner_slides.length
+    //     slide_node.active_inner_slide_index = 0
 
-    let all_percentages = []
-    this.slide_nodes.forEach(element => {
-      all_percentages.push(this.getViewPercentage(element))
-    })
-    const all_percentages_highest_value = Math.max(...all_percentages)
-    this.active_slide_index = all_percentages.indexOf(all_percentages_highest_value)
+    //     let all_percentages = []
+    //     inner_slides.forEach(inner_slide => {
+    //       all_percentages.push(this.getViewPercentage(inner_slide))
+    //     })
+    //     const all_percentages_highest_value = Math.max(...all_percentages)
+    //     console.log(slide_node);
+    //     console.log(all_percentages);
+    //     slide_node.active_inner_slide_index = all_percentages.indexOf(all_percentages_highest_value)
+    //     slide_node.style.transform = `translateX(-${slide_node.active_inner_slide_index * window.innerWidth}px)`
+    //     // this.create_dots(slide_node)
+    //   }
+    // })
+
+    this.slider_node.querySelector('.fullpage-wrapper').style.transform = 'translateY(0)'
+    // this.set_css_var('--fullpage-translateY', '0px')
+
+    // this.active_index = this.find_currently_visible_slide(this.slide_nodes)
     // console.log(all_percentages);
-    // console.log(this.active_slide_index);
-    this.set_slide_translate()
+    // console.log(this.active_index);
+    // this.set_slide_translate()
 
 		// -------------------------------------------
 
 		this.dots_nav_node
-		this.create_dots()
+		this.create_dots(this.slider_node)
 		this.dot_nodes = this.slider_node.querySelectorAll('.fullpage-dot')
-    this.dot_nodes[this.active_slide_index].classList.add('active')
+    this.dot_nodes[this.active_index].classList.add('fullpage-dot--active')
 
 		this.dot_nodes.forEach((dot, i) => {
 
@@ -78,6 +93,18 @@ class Fullpage
     })
   }
 
+  /**
+   * When loading the page, a slide deferent that the first slide may be visible, so we want to find the index of that slide
+   * @param slides {HTMLElement}
+   * @return {Number} Index of the visible slide
+   */
+  find_currently_visible_slide(slides) {
+    let all_percentages = []
+    slides.forEach(slide => all_percentages.push(this.getViewPercentage(slide)))
+    const all_percentages_highest_value = Math.max(...all_percentages)
+    return all_percentages.indexOf(all_percentages_highest_value)
+  }
+
   set_default_options() {
     this.options.is_horizontal = this.options.is_horizontal ?? false
 		this.options.dots_use_link = this.options.dots_use_link ?? false
@@ -108,9 +135,9 @@ class Fullpage
 	}
 
   handle_dots_on_click(dot, i) {
-    this.dot_nodes.forEach(dot2 => dot2.classList.remove('active'))
-    dot.classList.add('active')
-    this.active_slide_index = i
+    this.dot_nodes.forEach(dot2 => dot2.classList.remove('fullpage-dot--active'))
+    dot.classList.add('fullpage-dot--active')
+    this.active_index = i
     this.set_slide_translate()
   }
 
@@ -171,23 +198,48 @@ class Fullpage
 	do_scroll_stuff(e) {
     // Is scrolling down/right or top/left
 		if (e.deltaY > 0) {
-			this.scroll_to_next_slide()
+
+      console.log(this.active_index);
+      if (this.get_active_slide_el().has_child_slides) {
+        if (this.get_active_slide_el().active_inner_slide_index < this.get_active_slide_el().length - 1) {
+          this.get_active_slide_el().active_inner_slide_index += 1
+          this.get_active_slide_el().style.transform = `translateX(-${this.get_active_slide_el().active_inner_slide_index * window.innerWidth}px)`
+        } else {
+          this.scroll_to_next_slide()
+        }
+      } else {
+        this.scroll_to_next_slide()
+      }
+
 		} else {
-			this.scroll_to_prev_slide()
+
+      if (this.get_active_slide_el().classList.contains('fullpage-slide--has-inner')) {
+        if (this.get_active_slide_el().active_inner_slide_index > 0) {
+          this.get_active_slide_el().active_inner_slide_index -= 1
+          this.get_active_slide_el().style.transform = `translateX(-${this.get_active_slide_el().active_inner_slide_index * window.innerWidth}px)`
+        } else {
+          this.scroll_to_prev_slide()
+        }
+      } else {
+        this.scroll_to_prev_slide()
+      }
+
 		}
 		this.set_slide_translate()
 	}
 
 	set_slide_translate() {
     if (this.options.is_horizontal) {
-  		this.set_css_var('--fullpage-translateX', `-${this.active_slide_index * window.innerWidth}px`)
+      this.set_css_var('--fullpage-translateX', `-${this.active_index * window.innerWidth}px`)
     } else {
-      this.set_css_var('--fullpage-translateY', `-${this.active_slide_index * window.innerHeight}px`)
+      const value = `-${this.active_index * window.innerHeight}px`
+      this.slider_node.querySelector('.fullpage-wrapper').style.transform = `translateY(${value})`
+      // this.set_css_var('--fullpage-translateY', )
     }
 	}
 
 	get_active_slide_el() {
-		return this.slide_nodes[this.active_slide_index]
+		return this.slide_nodes[this.active_index]
 	}
 
 	/**
@@ -202,35 +254,45 @@ class Fullpage
 	}
 
 	update_dots_activeness() {
-    this.dot_nodes.forEach(dot => dot.classList.remove('active'))
-		this.dot_nodes[this.active_slide_index].classList.add('active')
+    this.dot_nodes.forEach(dot => dot.classList.remove('fullpage-dot--active'))
+		this.dot_nodes[this.active_index].classList.add('fullpage-dot--active')
 	}
 
 	scroll_to_next_slide() {
-    if (this.options.back_to_top && this.active_slide_index === this.slide_nodes.length - 1) {
-      this.active_slide_index = 0
+    if (this.options.back_to_top && this.active_index === this.slide_nodes.length - 1) {
+      this.active_index = 0
 			this.update_dots_activeness()
-    } else if (this.active_slide_index < this.slide_nodes.length - 1) {
-			this.active_slide_index += 1
+      if (this.get_active_slide_el().classList.contains('fullpage-slide--has-inner')) {
+        this.get_active_slide_el().active_inner_slide_index = 0
+        this.get_active_slide_el().style.transform = `translateX(-${this.get_active_slide_el().active_inner_slide_index * window.innerWidth}px)`
+      }
+    } else if (this.active_index < this.slide_nodes.length - 1) {
+      this.prev_active_index = this.active_index
+			this.active_index += 1
 			this.update_dots_activeness()
 		}
-		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)
+		// console.log(`ACTIVE_SLIDE: ${this.active_index}`)
 	}
 
 	scroll_to_prev_slide() {
-    if (this.options.back_to_bottom && this.active_slide_index === 0) {
-      this.active_slide_index = this.slide_nodes.length - 1
+    if (this.options.back_to_bottom && this.active_index === 0) {
+      this.active_index = this.slide_nodes.length - 1
 			this.update_dots_activeness()
-    } else if (this.active_slide_index > 0) {
-			this.active_slide_index -= 1
+      if (this.get_active_slide_el().classList.contains('fullpage-slide--has-inner')) {
+        this.get_active_slide_el().active_inner_slide_index = 0
+        this.get_active_slide_el().style.transform = `translateX(-${this.get_active_slide_el().active_inner_slide_index * window.innerWidth}px)`
+      }
+    } else if (this.active_index > 0) {
+      this.prev_active_index = this.active_index
+			this.active_index -= 1
 			this.update_dots_activeness()
 		}
-		// console.log(`ACTIVE_SLIDE: ${this.active_slide_index}`)
+		// console.log(`ACTIVE_SLIDE: ${this.active_index}`)
 	}
 
 	// --------------------------------------------
 
-	create_dots() {
+	create_dots(parrent_node_thant_adopts_the_nav) {
 
 		const nav = document.createElement('nav')
 		nav.classList.add('fullpage-dots')
@@ -270,7 +332,7 @@ class Fullpage
 		nav.appendChild(ul)
 
 		this.dots_nav_node = nav
-		this.slider_node.appendChild(this.dots_nav_node)
+		parrent_node_thant_adopts_the_nav.appendChild(this.dots_nav_node)
 
 	}
 
@@ -293,22 +355,6 @@ class Fullpage
 	 */
 	get_css_var(css_var_name) {
 		return getComputedStyle(document.documentElement).getPropertyValue(css_var_name)
-	}
-
-	/* Throw Error
-	-------------------------
-	*/
-
-	/**
-	 * @parem el {Node|NodeList} QuerySelector
-	 * @parem el_name {String}
-	 */
-	throw_error_if_el_could_not_be_found(el, el_name) {
-		if ( el === null || el.length <= 0 ) {
-			throw(
-				Error(`The referenced ${el_name} element could not be found.`)
-			)
-		}
 	}
 
 	/**
